@@ -38,6 +38,56 @@ const Login = () => {
         }
     }
 
+    const handleDemoUserLogin = async () => {
+        const values = {
+            email: "dummyuser@test.com",
+            password: "thisisnotsecure"
+        };
+        try {
+            setLoading(true);
+            const {data} = await axios.post("/api/user/login", values);
+            const role = data.role;
+            if(role === "admin") {
+                toast.success("Admin login successful");
+                return navigate("/app/admin");
+            }
+            if(role === "user") {
+                toast.success("User login successful");
+                return navigate("/app/user");
+            }
+            toast.success(data.message || "Login successful");
+        } catch(err) {
+            toast.error(err.response.data.message || err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleDemoAdminLogin = async () => {
+        const values = {
+            email: "dummyadmin@test.com",
+            password: "thisisnotsecure"
+        };
+        try {
+            setLoading(true);
+            const {data} = await axios.post("/api/user/login", values);
+            const role = data.role;
+            if(role === "admin") {
+                toast.success("Admin login successful");
+                return navigate("/app/admin");
+            }
+            if(role === "user") {
+                toast.success("User login successful");
+                return navigate("/app/user");
+            }
+            toast.success(data.message || "Login successful");
+        } catch(err) {
+            toast.error(err.response.data.message || err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className="flex">
             <div className="w-1/2 hidden md:flex items-center justify-center">
@@ -63,6 +113,34 @@ const Login = () => {
                         <Link style={{textDecoration: 'underline'}} to="/forgot-password" className="!text-[#FF735C] !font-bold">Forgot Password?</Link>
                         <Link style={{textDecoration: 'underline'}} to="/signup" className="!text-[#FF735C] !font-bold">Dont have an account?</Link>
                     </div>
+                    <div className="flex items-center my-4">
+                    <div className="flex-grow border-t border-gray-300"></div>
+                    <span className="flex-shrink mx-3 text-xs font-semibold text-gray-400 tracking-wider">OR</span>
+                    <div className="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                {/* Recruiter Quick-Access Demo Section */}
+                <div className="space-y-2">
+                    <p className="text-[15px] text-center text-gray-500 font-medium">Instant Demo Login Access</p>
+                    <div className="flex gap-2">
+                        <Button
+                            type="default"
+                            onClick={handleDemoUserLogin}
+                            className="flex-1 !border-gray-300 !text-gray-700 !font-semibold text-xs hover:!border-[#FF735C] hover:!text-[#FF735C]"
+                            block
+                        >
+                            User Demo
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={handleDemoAdminLogin}
+                            className="flex-1 !bg-slate-800 !text-white !font-semibold text-xs hover:!bg-[#FF735C]"
+                            block
+                        >
+                            Admin Demo
+                        </Button>
+                    </div>
+                </div>
                 </Card>
             </div>
         </div>
